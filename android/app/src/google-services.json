@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "16191216503",
+    "project_id": "contactmanag25",
+    "storage_bucket": "contactmanag25.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16191216503:android:35805ce6e3de7000019f72",
+        "android_client_info": {
+          "package_name": "com.contactmanag25.contactmanag"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkLJ9dWbIG2cpDhusHnktyJlNRYxYC6V8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
