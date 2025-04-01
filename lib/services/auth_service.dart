@@ -9,7 +9,6 @@ class AuthService {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } catch (e) {
-      print("Error: $e");
       return null;
     }
   }
@@ -20,7 +19,6 @@ class AuthService {
       await _auth.createUserWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } catch (e) {
-      print("Error: $e");
       return null;
     }
   }

@@ -1,6 +1,8 @@
+import 'package:contactmanag/screens/WelcomeScreen.dart';
+import 'package:contactmanag/screens/login_screen.dart';
+import 'package:contactmanag/screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,8 +18,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Contact Manager',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginScreen(),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+      ),
+      initialRoute: '/welcome', // Start with WelcomeScreen
+      routes: {
+        '/welcome': (context) => WelcomeScreen(),
+        '/login': (context) => LoginScreen(),
+      },
     );
   }
 }

@@ -1,7 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,91 +8,124 @@ class AddContactScreen extends StatefulWidget {
 }
 
 class _AddContactScreenState extends State<AddContactScreen> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(); // New field
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController addressController = TextEditingController(); // New field
 
-  File? _image;
-  bool _isUploading = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
+  void addContact() async {
+    String uid = _auth.currentUser!.uid;
+
+    if (nameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty &&
+        addressController.text.isNotEmpty) {
+      await _firestore.collection('users').doc(uid).collection('contacts').add({
+        'name': nameController.text.trim(),
+        'email': emailController.text.trim(),
+        'phone': phoneController.text.trim(),
+        'address': addressController.text.trim(), // Store address in Firebase
+        'profilePhoto': '', // Placeholder for profile photo
       });
+
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields.')),
+      );
     }
-  }
-
-  Future<String> _uploadImage(File image) async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-    Reference ref = FirebaseStorage.instance.ref().child('users/$uid/contacts/$fileName');
-    UploadTask uploadTask = ref.putFile(image);
-    TaskSnapshot taskSnapshot = await uploadTask;
-    return await taskSnapshot.ref.getDownloadURL();
-  }
-
-  Future<void> _saveContact() async {
-    if (_nameController.text.isEmpty || _phoneController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Name and Phone are required')));
-      return;
-    }
-
-    setState(() {
-      _isUploading = true;
-    });
-
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    String imageUrl = _image != null ? await _uploadImage(_image!) : '';
-
-    await FirebaseFirestore.instance.collection('users').doc(uid).collection('contacts').add({
-      'name': _nameController.text,
-      'phone': _phoneController.text,
-      'address': _addressController.text,
-      'email': _emailController.text,
-      'profilePhoto': imageUrl,
-      'createdAt': Timestamp.now(),
-    });
-
-    setState(() {
-      _isUploading = false;
-    });
-
-    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Contact')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: _pickImage,
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: _image != null ? FileImage(_image!) : null,
-                child: _image == null ? const Icon(Icons.camera_alt, size: 40) : null,
+      appBar: AppBar(title: const Text("Add Contact"),
+          backgroundColor: Colors.blueAccent),
+      resizeToAvoidBottomInset: true,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFBBDEFB), Color(0xFF90CAF9)], // Light blue gradient
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SingleChildScrollView( // Makes the content scrollable when the keyboard opens
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 120, 20.0, 50.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "New Contact",
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: "Name",
+                        prefixIcon: const Icon(Icons.person),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        prefixIcon: const Icon(Icons.email),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      controller: phoneController,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        labelText: "Phone Number",
+                        prefixIcon: const Icon(Icons.phone),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      controller: addressController,
+                      decoration: InputDecoration(
+                        labelText: "Address",
+                        prefixIcon: const Icon(Icons.home),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: addContact,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          backgroundColor: Colors.blueAccent,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text(
+                          "Save Contact",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            TextField(controller: _nameController, decoration: const InputDecoration(labelText: 'Name')),
-            TextField(controller: _phoneController, decoration: const InputDecoration(labelText: 'Phone')),
-            TextField(controller: _addressController, decoration: const InputDecoration(labelText: 'Address')),
-            TextField(controller: _emailController, decoration: const InputDecoration(labelText: 'Email')),
-            const SizedBox(height: 20),
-            _isUploading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-              onPressed: _saveContact,
-              child: const Text('Save Contact'),
-            ),
-          ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }
