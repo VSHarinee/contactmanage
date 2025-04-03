@@ -12,6 +12,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
   final TextEditingController emailController = TextEditingController(); // New field
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController(); // New field
+  bool isFavorite = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -29,6 +30,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
         'phone': phoneController.text.trim(),
         'address': addressController.text.trim(), // Store address in Firebase
         'profilePhoto': '', // Placeholder for profile photo
+        'isFavorite': isFavorite,// Favorite field added
       });
 
       Navigator.pop(context);

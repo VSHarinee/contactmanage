@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'EditContactScreen.dart';
 
-class ContactDetailsScreen extends StatelessWidget {
+class ContactDetailsScreen extends StatefulWidget {
   final String contactId;
   final String name;
   final String phone;
@@ -21,6 +21,45 @@ class ContactDetailsScreen extends StatelessWidget {
     required this.profilePhoto,
     required this.uid,
   }) : super(key: key);
+  @override
+  _ContactDetailsScreenState createState() => _ContactDetailsScreenState();
+}
+
+class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavoriteStatus();
+  }
+  void _loadFavoriteStatus() async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.uid)
+        .collection('contacts')
+        .doc(widget.contactId)
+        .get();
+
+    if (doc.exists && doc.data() != null) {
+      setState(() {
+        isFavorite = doc['isFavorite'] is bool ? doc['isFavorite'] : false;
+      });
+    }
+  }
+
+  void _toggleFavorite() async {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.uid)
+        .collection('contacts')
+        .doc(widget.contactId)
+        .update({'isFavorite': isFavorite});
+  }
 
   void deleteContact(BuildContext context) async {
     bool confirmDelete = await showDialog(
@@ -44,9 +83,9 @@ class ContactDetailsScreen extends StatelessWidget {
     if (confirmDelete == true) {
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(uid)
+          .doc(widget.uid)
           .collection('contacts')
-          .doc(contactId)
+          .doc(widget.contactId)
           .delete();
       Navigator.pop(context);
     }
@@ -55,7 +94,7 @@ class ContactDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(name), backgroundColor: Colors.blueAccent),
+      appBar: AppBar(title: Text(widget.name), backgroundColor: Colors.blueAccent),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -63,57 +102,71 @@ class ContactDetailsScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: profilePhoto.isNotEmpty
-                  ? NetworkImage(profilePhoto)
+              backgroundImage: widget.profilePhoto.isNotEmpty
+                  ? NetworkImage(widget.profilePhoto)
                   : null,
-              child: profilePhoto.isEmpty
+              child: widget.profilePhoto.isEmpty
                   ? const Icon(Icons.person, size: 50, color: Colors.white)
                   : null,
               backgroundColor: Colors.blueAccent,
             ),
             const SizedBox(height: 20),
-            Text(name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text(widget.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-            Text("Phone: $phone", style: const TextStyle(fontSize: 18)),
+            Text("Phone: ${widget.phone}", style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 5),
-            Text("Email: $email", style: const TextStyle(fontSize: 18)),
+            Text("Email: ${widget.email}", style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 5),
-            Text("Address: $address", style: const TextStyle(fontSize: 18)),
+            Text("Address: ${widget.address}", style: const TextStyle(fontSize: 18)),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton.icon(
+            IconButton(
+              icon: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
+                color: isFavorite ? Colors.yellow : Colors.grey,
+                size: 40,
+              ),
+              onPressed: _toggleFavorite,
+            ),
+           // const SizedBox(height: 10),
+
+                IconButton(
+
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => EditContactScreen(
-                          contactId: contactId,
-                          name: name,
-                          phone: phone,
-                          email: email,
-                          address: address,
+                          contactId: widget.contactId,
+                          name: widget.name,
+                          phone: widget.phone,
+                          email: widget.email,
+                          address: widget.address,
                         ),
                       ),
                     );
                   },
-                  icon: const Icon(Icons.edit),
-                  label: const Text("Edit"),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
+                  icon: const Icon(Icons.edit,size: 30,),
+                  tooltip: "Edit Contact",
+
                 ),
-                ElevatedButton.icon(
+                IconButton(
                   onPressed: () => deleteContact(context),
-                  icon: const Icon(Icons.delete),
-                  label: const Text("Delete"),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                  icon: const Icon(Icons.delete,size: 30,),
+                  tooltip: "Delete Contact",
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-          ],
+            const SizedBox(height: 20),],
         ),
+            //
+
       ),
-    );
+      );
+
   }
+
+
 }
