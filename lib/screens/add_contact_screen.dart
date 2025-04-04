@@ -44,15 +44,15 @@ class _AddContactScreenState extends State<AddContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Contact"),
-          backgroundColor: Colors.blueAccent),
+      appBar: AppBar(title: const Text("Add Contact",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+          backgroundColor: Color(0xFF4361ee),iconTheme: IconThemeData(color: Colors.white),),
       resizeToAvoidBottomInset: true,
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFFFFFF), Color(0xFFFFFFF)], // Light blue gradient
+            colors: [Color(0xFFa2d2ff), Color(0xFFFFFFF)], // Light blue gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -64,11 +64,11 @@ class _AddContactScreenState extends State<AddContactScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      "New Contact",
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.blueAccent),
-                    ),
-                    const SizedBox(height: 20),
+                    // const Text(
+                    //   "New Contact",
+                    //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF4361ee)),
+                    // ),
+                    // const SizedBox(height: 20),
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(
@@ -113,7 +113,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                         onPressed: addContact,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
-                          backgroundColor: Colors.blueAccent,
+                          backgroundColor: Color(0xFF4361ee),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         child: const Text(

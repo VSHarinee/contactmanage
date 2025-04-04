@@ -35,7 +35,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           /// Background Image
           Positioned.fill(
             child: Image.asset(
-              "assets/download.jpg",
+              "assets/app1.jpg",
               fit: BoxFit.cover,
             ),
           ),

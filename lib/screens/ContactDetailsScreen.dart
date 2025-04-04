@@ -101,7 +101,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           widget.name,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Color(0xFF4361ee),
+        backgroundColor: Color(0xFF4361ee),iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
