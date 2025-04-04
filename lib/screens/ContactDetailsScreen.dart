@@ -21,6 +21,7 @@ class ContactDetailsScreen extends StatefulWidget {
     required this.profilePhoto,
     required this.uid,
   }) : super(key: key);
+
   @override
   _ContactDetailsScreenState createState() => _ContactDetailsScreenState();
 }
@@ -33,6 +34,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
     super.initState();
     _loadFavoriteStatus();
   }
+
   void _loadFavoriteStatus() async {
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('users')
@@ -94,7 +96,13 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.name), backgroundColor: Colors.blueAccent),
+      appBar: AppBar(
+        title: Text(
+          widget.name,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Color(0xFF4361ee),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -108,32 +116,78 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
               child: widget.profilePhoto.isEmpty
                   ? const Icon(Icons.person, size: 50, color: Colors.white)
                   : null,
-              backgroundColor: Colors.blueAccent,
+              backgroundColor: Color(0xFF4361ee),
             ),
             const SizedBox(height: 20),
             Text(widget.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-            Text("Phone: ${widget.phone}", style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 5),
-            Text("Email: ${widget.email}", style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 5),
-            Text("Address: ${widget.address}", style: const TextStyle(fontSize: 18)),
+
+            // Phone Box
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), blurRadius: 5)],
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.phone, color: Colors.blue),
+                  SizedBox(width: 10),
+                  Text(widget.phone, style: TextStyle(fontSize: 18)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Email Box
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), blurRadius: 5)],
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.email, color: Colors.red),
+                  SizedBox(width: 10),
+                  Text(widget.email, style: TextStyle(fontSize: 18)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Address Box
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), blurRadius: 5)],
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.home, color: Colors.green),
+                  SizedBox(width: 10),
+                  Expanded(child: Text(widget.address, style: TextStyle(fontSize: 18))),
+                ],
+              ),
+            ),
+
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-            IconButton(
-              icon: Icon(
-                isFavorite ? Icons.star : Icons.star_border,
-                color: isFavorite ? Colors.yellow : Colors.grey,
-                size: 40,
-              ),
-              onPressed: _toggleFavorite,
-            ),
-           // const SizedBox(height: 10),
-
                 IconButton(
-
+                  icon: Icon(
+                    isFavorite ? Icons.star : Icons.star_border,
+                    color: isFavorite ? Colors.yellow : Colors.grey,
+                    size: 40,
+                  ),
+                  onPressed: _toggleFavorite,
+                ),
+                IconButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -148,25 +202,20 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.edit,size: 30,),
+                  icon: const Icon(Icons.edit, size: 30),
                   tooltip: "Edit Contact",
-
                 ),
                 IconButton(
                   onPressed: () => deleteContact(context),
-                  icon: const Icon(Icons.delete,size: 30,),
+                  icon: const Icon(Icons.delete, size: 30),
                   tooltip: "Delete Contact",
                 ),
               ],
             ),
-            const SizedBox(height: 20),],
+            const SizedBox(height: 20),
+          ],
         ),
-            //
-
       ),
-      );
-
+    );
   }
-
-
 }

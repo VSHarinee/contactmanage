@@ -58,7 +58,8 @@ class _EditContactScreenState extends State<EditContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Contact")),
+      appBar: AppBar(title: const Text("Edit Contact",style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold),), backgroundColor: Color(0xFF4361ee)),
+      //appBar: AppBar(title: Text(widget.name,style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold),), backgroundColor: Color(0xFF4361ee)),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -103,7 +104,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
                 onPressed: updateContact,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: Color(0xFF4361ee),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 child: const Text(

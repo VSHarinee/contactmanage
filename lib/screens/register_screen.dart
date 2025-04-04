@@ -59,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         height: double.infinity, // Ensure it takes full height
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFBBDEFB), Color(0xFF90CAF9)], // Light Blue Gradient
+            colors: [Color(0xFFa2d2ff), Color(0xFFFFFFF)], // Light Blue Gradient
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -79,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       const Text(
                         "Sign Up",
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF4361ee)),
                       ),
                       const SizedBox(height: 20),
                       TextField(
@@ -135,8 +135,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            backgroundColor: Color(0xFF4361ee),
                           ),
-                          child: const Text("Sign Up", style: TextStyle(fontSize: 18)),
+                          child: const Text("Sign Up", style: TextStyle(fontSize: 18,color: Color(0xFFFFFFFF))),
                         ),
                       ),
                     ],

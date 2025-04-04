@@ -35,7 +35,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           /// Background Image
           Positioned.fill(
             child: Image.asset(
-              "assets/app1.jpg",
+              "assets/download.jpg",
               fit: BoxFit.cover,
             ),
           ),
@@ -101,7 +101,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFFC300),
+                      backgroundColor: const Color(0xFF4361ee),
                       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -109,7 +109,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     child: const Text(
                       "Get Started",
-                      style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

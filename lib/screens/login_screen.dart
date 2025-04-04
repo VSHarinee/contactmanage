@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFBBDEFB), Color(0xFF90CAF9)], // Updated blue gradient
+            colors: [Color(0xFFa2d2ff), Color(0xFFFFFFF)], // Updated blue gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey, // Adjusted for better contrast
+                        color: Color(0xFF4361ee), // Adjusted for better contrast
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: login,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
-                          backgroundColor: Color(0xFF90CAF9), // Updated button color
+                          backgroundColor: Color(0xFF4361ee), // Updated button color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

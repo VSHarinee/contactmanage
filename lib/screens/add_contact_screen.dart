@@ -52,7 +52,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFBBDEFB), Color(0xFF90CAF9)], // Light blue gradient
+            colors: [Color(0xFFFFFFF), Color(0xFFFFFFF)], // Light blue gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
