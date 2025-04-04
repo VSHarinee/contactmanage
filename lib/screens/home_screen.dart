@@ -272,6 +272,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'ContactDetailsScreen.dart';
+import 'WelcomeScreen.dart';
 import 'add_contact_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -288,7 +289,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WelcomeScreen()),
+    );
   }
 
   Future<String> fetchUserName(String uid) async {
